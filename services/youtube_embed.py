@@ -21,17 +21,31 @@ def get_youtube_id(youtube_url):
 
 
 # Page for embedding YouTube videos with start and end times
-def embed_video(video_id, start_time, end_time):
-    st.title("YouTube Video Embed")
+def embed_video():
+    # Get query parameters from URL
+    query_params = st.experimental_get_query_params()
 
-    # Generate the YouTube embed iframe with start and end times
-    iframe_code = f'''
-    <iframe width="100%" height="500"
-        src="https://www.youtube.com/embed/{video_id}?start={start_time}&end={end_time}"
-        title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-    </iframe>
-    '''
+    # Parse the video ID, start time, and end time from the query parameters
+    video_id = query_params.get('video', [None])[0]
+    start_time = query_params.get('start', [0])[0]  # Default to 0 if no start time
+    end_time = query_params.get('end', [0])[0]      # Default to 0 if no end time
 
-    # Display the iframe
-    st.markdown(iframe_code, unsafe_allow_html=True)
+    # Ensure the video ID exists
+    if video_id:
+        st.title(f"Embedding YouTube Video: {video_id}")
+
+        # Generate the YouTube embed iframe
+        iframe_code = f'''
+        <iframe width="100%" height="500"
+            src="https://www.youtube.com/embed/{video_id}?start={start_time}&end={end_time}"
+            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        </iframe>
+        '''
+
+        # Display the iframe
+        st.markdown(iframe_code, unsafe_allow_html=True)
+    else:
+        st.error("Invalid or missing video ID.")
+
+embed_video()
 
