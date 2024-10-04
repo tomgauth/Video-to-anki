@@ -25,21 +25,21 @@ def embed_video():
     query_params = st.query_params
 
     # Log the query parameters for debugging
-    st.write("Query Parameters Received:", query_params)
+    # st.write("Query Parameters Received:", query_params)
 
     # Parse the video ID, start time, and end time from the query parameters
-    video_id = query_params.get('video', [None])[0]
+    video_id = query_params.get('video')
     start_time = query_params.get('start', [0])[0]  # Default to 0 if no start time
     end_time = query_params.get('end', [0])[0]      # Default to 0 if no end time
 
     # Log the extracted values for debugging
-    st.write(f"Parsed Video ID: {video_id}")
-    st.write(f"Parsed Start Time: {start_time}")
-    st.write(f"Parsed End Time: {end_time}")
+    #st.write(f"Parsed Video ID: {video_id}")
+    #st.write(f"Parsed Start Time: {start_time}")
+    #st.write(f"Parsed End Time: {end_time}")
 
     # Ensure the video ID exists
     if video_id:
-        st.title(f"Embedding YouTube Video: {video_id}")
+        #st.title(f"Embedding YouTube Video: {video_id}")
 
         # Generate the YouTube embed iframe
         iframe_code = f'''
@@ -48,11 +48,6 @@ def embed_video():
             title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
         </iframe>
         '''
-
-        # Display the iframe and log it for debugging
-        st.write("Generated iframe code:")
-        st.write(iframe_code)
-        st.markdown(iframe_code, unsafe_allow_html=True)
     else:
         st.error("Invalid or missing video ID.")
         st.write("Error: No video ID found in the query parameters.")
