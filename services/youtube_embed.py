@@ -25,7 +25,7 @@ def embed_video():
     query_params = st.query_params
 
     # Log the query parameters for debugging
-    # st.write("Query Parameters Received:", query_params)
+    st.write("Query Parameters Received:", query_params)
 
     # Parse the video ID, start time, and end time from the query parameters
     video_id = query_params.get('video')
@@ -33,13 +33,13 @@ def embed_video():
     end_time = query_params.get('end', [0])[0]      # Default to 0 if no end time
 
     # Log the extracted values for debugging
-    #st.write(f"Parsed Video ID: {video_id}")
-    #st.write(f"Parsed Start Time: {start_time}")
-    #st.write(f"Parsed End Time: {end_time}")
+    st.write(f"Parsed Video ID: {video_id}")
+    st.write(f"Parsed Start Time: {start_time}")
+    st.write(f"Parsed End Time: {end_time}")
 
     # Ensure the video ID exists
     if video_id:
-        #st.title(f"Embedding YouTube Video: {video_id}")
+        st.title(f"Embedding YouTube Video: {video_id}")
 
         # Generate the YouTube embed iframe
         iframe_code = f'''
