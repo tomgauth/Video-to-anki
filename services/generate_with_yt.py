@@ -38,7 +38,7 @@ def generate_deck_with_youtube(subtitles, video_id):
         # Generate the YouTube embed iframe using your own app logic
         recto_content = f'''
         <iframe width="100%" height="500"
-            src="https://video2anki.streamlit.app/video/{video_id}/{start_time}/{end_time}"
+            src="https://video2anki.streamlit.app/youtube_frame?video={video_id}&start={start_time}&end={end_time}"
             title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
         </iframe>
         '''
