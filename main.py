@@ -3,7 +3,9 @@ import os
 import genanki
 from services.srt_parser import parse_srt
 from services.anki_formatter import generate_deck_with_clips
+from services.generate_with_yt import generate_deck_with_youtube
 import shutil
+
 
 # Function to delete existing video files and videos in the video_clips folder
 def delete_existing_videos():
@@ -41,37 +43,31 @@ def count_clips_created(total_clips, st_progress):
 # Streamlit app frontend
 st.title("SRT to Anki Flashcards with Video Clips")
 
+if st.button("Delete cache"):
+    delete_existing_videos()
 
-# File uploader for the .mp4 file
-uploaded_video = st.file_uploader("Upload your video file (.mp4)", type=["mp4"])
+# Streamlit app frontend
+st.title("YouTube to Anki Flashcards with Subtitles")
+
+# Input for YouTube URL
+youtube_url = st.text_input("Enter YouTube Video URL")
 
 # File uploader for the .srt file
 uploaded_srt = st.file_uploader("Upload your .srt file", type=["srt"])
 
-if uploaded_video and uploaded_srt:
-    delete_existing_videos()
-    # Save the uploaded files
-    video_file_path = f"uploaded_video.mp4"
-    with open(video_file_path, "wb") as f:
-        f.write(uploaded_video.read())
-
+if youtube_url and uploaded_srt:
+    # Extract video ID from the YouTube URL
+    video_id = youtube_url.split('v=')[-1]
+    
     srt_content = uploaded_srt.read().decode("utf-8")
     
     # Parse the .srt file to extract subtitles and timestamps
     subtitles = parse_srt(srt_content)
-    total_clips = len(subtitles)  # Total number of clips to be created
-    
-    # Initialize the progress bar
-    st_progress = st.progress(0)
     
     # Button to process the video and generate flashcards
     if st.button("Generate Anki Flashcards"):
-        # Generate video clips and Anki deck
-        my_deck = generate_deck_with_clips(subtitles, video_file_path, st_progress, total_clips)
-
-        # Continuously update progress based on the number of clips created
-        while len(os.listdir('video_clips')) < total_clips:
-            count_clips_created(total_clips, st_progress)
+        # Generate Anki deck with YouTube embeds
+        my_deck = generate_deck_with_youtube(subtitles, video_id)
 
         # Save the Anki deck to a file
         deck_file = 'output.apkg'
@@ -81,4 +77,4 @@ if uploaded_video and uploaded_srt:
         with open(deck_file, "rb") as f:
             st.download_button(label="Download Anki Deck", data=f, file_name="flashcards.apkg", mime="application/octet-stream")
 else:
-    st.info("Please upload both a video and an .srt file.")
+    st.info("Please enter a YouTube URL and upload a subtitle file.")

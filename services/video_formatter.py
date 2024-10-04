@@ -2,6 +2,33 @@
 import ffmpeg
 import os
 
+def convert_video_to_gif(input_video, output_gif):
+    """
+    Converts a video file into a GIF.
+    :param input_video: Path to the input video file.
+    :param output_gif: Path to the output GIF file.
+    """
+    ffmpeg.input(input_video).output(output_gif, vf="fps=10,scale=320:-1:flags=lanczos", loop=0).run()
+
+def extract_audio(input_video, output_audio):
+    """
+    Extracts audio from a video file.
+    :param input_video: Path to the input video file.
+    :param output_audio: Path to the output audio file (should be .mp3 or .aac).
+    """
+    try:
+        (
+            ffmpeg
+            .input(input_video)
+            .output(output_audio, acodec='aac', audio_bitrate='128k', ar='44100')  # Keeping AAC codec as an example
+            .run(capture_stdout=True, capture_stderr=True)
+        )
+    except ffmpeg.Error as e:
+        print("FFmpeg failed with the following error:")
+        print(e.stderr.decode('utf8'))  # This will print the full error details from FFmpeg
+        raise e
+
+
 def lower_video_quality(input_video, output_video):
     """
     Lowers the quality of the video to 360p max without changing the codec.
