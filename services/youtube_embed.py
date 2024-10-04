@@ -19,16 +19,23 @@ def get_youtube_id(youtube_url):
         return None  # Return None if the URL doesn't match the expected formats
 
 
-
 # Page for embedding YouTube videos with start and end times
 def embed_video():
-    # Get query parameters from URL
-    query_params = st.experimental_get_query_params()
+    # Get query parameters from URL (Updated to use st.query_params)
+    query_params = st.query_params
+
+    # Log the query parameters for debugging
+    st.write("Query Parameters Received:", query_params)
 
     # Parse the video ID, start time, and end time from the query parameters
     video_id = query_params.get('video', [None])[0]
     start_time = query_params.get('start', [0])[0]  # Default to 0 if no start time
     end_time = query_params.get('end', [0])[0]      # Default to 0 if no end time
+
+    # Log the extracted values for debugging
+    st.write(f"Parsed Video ID: {video_id}")
+    st.write(f"Parsed Start Time: {start_time}")
+    st.write(f"Parsed End Time: {end_time}")
 
     # Ensure the video ID exists
     if video_id:
@@ -42,10 +49,12 @@ def embed_video():
         </iframe>
         '''
 
-        # Display the iframe
+        # Display the iframe and log it for debugging
+        st.write("Generated iframe code:")
+        st.write(iframe_code)
         st.markdown(iframe_code, unsafe_allow_html=True)
     else:
         st.error("Invalid or missing video ID.")
+        st.write("Error: No video ID found in the query parameters.")
 
 embed_video()
-

@@ -6,4 +6,4 @@ st.sidebar.title("Navigation")
 page = st.sidebar.selectbox("Choose a page", ["Home", "YouTube Embed"])
 
 
-embed_video('zhWDdy_5v2w', 30, 33)  # Example video with start and end times
+embed_video()  # Example video with start and end times
